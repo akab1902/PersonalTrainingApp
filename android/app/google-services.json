@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "536777023085",
+    "project_id": "personal-training-app-2023",
+    "storage_bucket": "personal-training-app-2023.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536777023085:android:f7995b7f13f3eda24f6964",
+        "android_client_info": {
+          "package_name": "com.example.personal_training_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "536777023085-rb9rq5sa0vq47on4uo9831c759uqd597.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcsYXqzveGJ_DhRz8AjN69wH89WtBhjoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "536777023085-rb9rq5sa0vq47on4uo9831c759uqd597.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
