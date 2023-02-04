@@ -8,13 +8,15 @@ class BndBox extends StatelessWidget {
   final double screenH;
   final double screenW;
   final String model;
+  final Function incrementCount;
+  dynamic noseX = null;
 
   BndBox(this.results, this.previewH, this.previewW, this.screenH, this.screenW,
-      this.model);
+      this.model, this.incrementCount);
 
   @override
   Widget build(BuildContext context) {
-
+    bool moveDown = true;
     List<Widget> _renderKeypoints() {
       var lists = <Widget>[];
       results.forEach((re) {
@@ -36,6 +38,8 @@ class BndBox extends StatelessWidget {
             x = _x * scaleW;
             y = (_y - difH / 2) * scaleH;
           }
+
+          if(k['part'] == 'nose' && k['score'] > 0.6) {
           return Positioned(
             left: x - 6,
             top: y - 6,
@@ -44,13 +48,16 @@ class BndBox extends StatelessWidget {
             child: Container(
               child: Text(
                 "● ${k["part"]}",
-                style: TextStyle(
+                style: const TextStyle(
                   color: Color.fromRGBO(37, 213, 253, 1.0),
                   fontSize: 12.0,
                 ),
               ),
             ),
           );
+          } else {
+            return Container();
+          }
         }).toList();
 
         lists..addAll(list);
