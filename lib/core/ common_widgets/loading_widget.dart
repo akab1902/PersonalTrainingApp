@@ -9,7 +9,7 @@ class LoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: double.infinity,
+      // height: double.infinity,
       color: ColorConstants.black,
       child: Center(
         child: Theme(

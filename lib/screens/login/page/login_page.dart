@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../home/page/home.dart';
+import '../bloc/login_bloc.dart';
+import '../widget/login_content.dart';
+
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -17,13 +21,13 @@ class LoginPage extends StatelessWidget {
       child: BlocConsumer<LoginBloc, LoginState> (
         buildWhen: (_, currState) => currState is LoginInitial,
         builder: (context, state) {
-          return LoginContent();
+          return const LoginContent();
         },
         listenWhen: (_, currState) =>
-          currState is ErrorState || currState is NextSignUpPage,
+          currState is ErrorState || currState is NextHomePageState,
         listener: (context, state) {
-          if (state is NextSignUpPageState) {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SignUpPage()));
+          if (state is NextHomePageState) {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomePage()));
           } else if (state is ErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),

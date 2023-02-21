@@ -20,7 +20,7 @@ class LoginContent extends StatelessWidget {
         color: ColorConstants.backgroundWhite,
         child: Stack(
           children: [
-            _createMainData(context),
+            // _createMainData(context),
             BlocBuilder<LoginBloc, LoginState>(
                 buildWhen: (_, currState) => currState is LoadingState || currState is ErrorState,
                 builder: (context, state) {
