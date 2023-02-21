@@ -7,6 +7,7 @@ import 'package:personal_training_app/screens/signup/bloc/signup_bloc.dart';
 import '../../../core/ common_widgets/custom_button.dart';
 import '../../../core/ common_widgets/custom_text_field.dart';
 import '../../../core/ common_widgets/loading_widget.dart';
+import '../../../core/service/validation_service.dart';
 
 class SignUpContent extends StatelessWidget {
   const SignUpContent({Key? key}) : super(key: key);
@@ -58,6 +59,10 @@ class SignUpContent extends StatelessWidget {
             height: 20,
           ),
           _createForm(context),
+          const SizedBox(
+            height: 20,
+          ),
+          _createSignUpButton(context)
         ],
       ),
     ));
@@ -84,14 +89,23 @@ class SignUpContent extends StatelessWidget {
       child: BlocBuilder<SignupBloc, SignupState>(
         buildWhen: (_, currState) => currState is SignUpButtonEnableChangedState,
         builder: (context, state) {
-          return CustomButton();
+          return CustomButton(
+            title: TextConstants.signUp,
+            isEnabled: state is SignUpButtonEnableChangedState
+                ? state.isEnabled
+                : false,
+            onTap: () {
+              FocusScope.of(context).unfocus();
+              bloc.add(SignUpTappedEvent());
+            },
+          );
         },
       ),
     );
   }
 
   Widget _createForm(BuildContext context) {
-    // final bloc = BlocProvider.of<SignupBloc>(context);
+    final bloc = BlocProvider.of<SignupBloc>(context);
     return BlocBuilder<SignupBloc, SignupState>(
       buildWhen: (_, currState) => currState is ShowErrorState,
       builder: (context, state) {
@@ -99,12 +113,47 @@ class SignUpContent extends StatelessWidget {
           children: [
             CustomTextField(
               title: 'Username',
-              placeholder: 'username',
-              errorText: 'No text',
-              controller: TextEditingController(),
-              onTextChanged: () {},
+              placeholder: 'username01',
+              errorText: 'Invalid username',
+              controller: bloc.userNameController,
+              isError: state is ShowErrorState ? !ValidationService.username(bloc.userNameController.text) : false,
+              onTextChanged: () {
+                bloc.add(OnTextChangedEvent());
+              },
             ),
             const SizedBox(height: 20),
+            CustomTextField(
+              title: 'Email',
+              placeholder: 'example@email.com',
+              errorText: 'Invalid email',
+              controller: bloc.emailController,
+              isError: state is ShowErrorState ? !ValidationService.email(bloc.emailController.text) : false,
+              onTextChanged: () {
+                bloc.add(OnTextChangedEvent());
+              },
+            ),
+            const SizedBox(height: 20),
+            CustomTextField(
+              title: 'Password',
+              placeholder: 'Must be at least 6 symbols',
+              errorText: 'Weak password',
+              controller: bloc.passwordController,
+              isError: state is ShowErrorState ? !ValidationService.password(bloc.passwordController.text) : false,
+              onTextChanged: () {
+                bloc.add(OnTextChangedEvent());
+              },
+            ),
+            const SizedBox(height: 20),
+            CustomTextField(
+              title: 'Confirm Password',
+              placeholder: 'Re-enter password',
+              errorText: 'Passwords are not same',
+              controller: bloc.confirmPasswordController,
+              isError: state is ShowErrorState ? !ValidationService.confirmPassword(bloc.passwordController.text, bloc.confirmPasswordController.text) : false,
+              onTextChanged: () {
+                bloc.add(OnTextChangedEvent());
+              },
+            ),
           ],
         );
       },

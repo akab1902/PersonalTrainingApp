@@ -30,6 +30,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
   bool stateIsError = false;
 
   @override
+  void didUpdateWidget(covariant CustomTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    stateIsError = focusNode.hasFocus ? false : widget.isError;
+  }
+
+  @override
   void initState() {
     super.initState();
     focusNode.addListener(() {
@@ -71,7 +77,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               borderSide: BorderSide(
                   color: stateIsError
                       ? ColorConstants.errorColor
-                      : ColorConstants.texBlack.withOpacity(0.5))),
+                      : ColorConstants.textFieldBorder.withOpacity(0.5))),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
               borderSide:
@@ -79,7 +85,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           hintText: widget.placeholder,
           hintStyle: const TextStyle(color: ColorConstants.grey, fontSize: 16),
           filled: true,
-          fillColor: ColorConstants.backgroundWhite),
+          fillColor: ColorConstants.textFieldBackground),
       onChanged: (text) {
         setState(() {});
         widget.onTextChanged();
