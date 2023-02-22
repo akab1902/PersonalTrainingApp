@@ -70,7 +70,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       focusNode: focusNode,
       controller: widget.controller,
       textInputAction: widget.textInputAction,
-      style: const TextStyle(color: ColorConstants.texBlack, fontSize: 16),
+      style: const TextStyle(color: ColorConstants.textBlack, fontSize: 16),
       decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
@@ -123,7 +123,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     } else if (stateIsError) {
       return ColorConstants.errorColor;
     } else if (widget.controller.text.isNotEmpty) {
-      return ColorConstants.texBlack;
+      return ColorConstants.textBlack;
     }
     return ColorConstants.grey;
   }

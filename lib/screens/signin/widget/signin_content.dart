@@ -70,7 +70,7 @@ class SignInContent extends StatelessWidget {
     return const Text(
       TextConstants.signIn,
       style: TextStyle(
-          color: ColorConstants.texBlack,
+          color: ColorConstants.textBlack,
           fontSize: 24,
           fontWeight: FontWeight.bold),
     );
@@ -138,7 +138,7 @@ class SignInContent extends StatelessWidget {
         text: TextSpan(
             text: "Don't have an account?",
             style: const TextStyle(
-                color: ColorConstants.texBlack,
+                color: ColorConstants.textBlack,
                 fontSize: 18),
             children: [
               TextSpan(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:personal_training_app/core/const/color_constants.dart';
+import 'package:personal_training_app/core/const/path_constants.dart';
 import 'package:personal_training_app/screens/home/page/home_page.dart';
 
 import '../bloc/nav_bar_bloc.dart';
@@ -38,7 +39,7 @@ class NavBarPage extends StatelessWidget {
       items: [
         BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              'assets/icons/sport_icon.svg',
+              PathConstants.sportIcon,
               colorFilter: ColorFilter.mode(
                   bloc.currentIndex == 0
                       ? ColorConstants.primaryColor
@@ -48,7 +49,7 @@ class NavBarPage extends StatelessWidget {
             label: 'home'),
         BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              'assets/icons/camera_icon.svg',
+              PathConstants.cameraIcon,
               colorFilter: ColorFilter.mode(
                   bloc.currentIndex == 1
                       ? ColorConstants.primaryColor
@@ -58,7 +59,7 @@ class NavBarPage extends StatelessWidget {
             label: 'camera'),
         BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              'assets/icons/stats_icon.svg',
+              PathConstants.statsIcon,
               colorFilter: ColorFilter.mode(
                   bloc.currentIndex == 2
                       ? ColorConstants.primaryColor
