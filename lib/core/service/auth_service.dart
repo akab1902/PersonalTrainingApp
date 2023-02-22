@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'logger.dart';
+
 class AuthService {
   static final FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -8,7 +10,7 @@ class AuthService {
         email: email.trim(), password: password.trim());
     final User user = result.user!;
     await user.updateDisplayName(name);
-    print("user created");
+    logger.i("user created");
     // final userData = UserData.fromFirebase(auth.currentUser);
     // await UserStorageService.writeSecureData(email, userData.toJsonString());
     // GlobalConstants.currentUser = userData;
@@ -38,7 +40,7 @@ class AuthService {
       if (user == null) {
         throw Exception("User not found");
       } else {
-        print('User found');
+        logger.i('User found');
       //   final userFromLocal = await UserStorageService.readSecureData(email);
       //   final userData = UserData.fromFirebase(auth.currentUser);
       //   if (userFromLocal == null) {
@@ -62,7 +64,7 @@ class AuthService {
 }
 
 String getExceptionMessage(FirebaseAuthException e) {
-  print(e.code);
+  logger.e(e.code);
   switch (e.code) {
     case 'user-not-found':
       return 'User not found';
