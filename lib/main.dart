@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Montserrat',
         primaryColor: ColorConstants.primaryColor
       ),
-      home: !isLoggedIn ? const NavBarPage() : const SignInPage(),
+      home: isLoggedIn ? const NavBarPage() : const SignInPage(),
     );
   }
 }

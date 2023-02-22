@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:personal_training_app/screens/nav_bar/page/nav_bar_page.dart';
 import 'package:personal_training_app/screens/signup/page/signup_page.dart';
 
-import '../../home/page/home_page.dart';
 import '../bloc/signin_bloc.dart';
 import '../widget/signin_content.dart';
 
@@ -31,7 +31,7 @@ class SignInPage extends StatelessWidget {
           listener: (context, state) {
             if (state is NextHomePageState) {
               Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (_) => const HomePage()));
+                  context, MaterialPageRoute(builder: (_) => const NavBarPage()));
             } else if (state is NextSignUpPageState) {
               Navigator.pushReplacement(
                   context, MaterialPageRoute(builder: (_) => const SignupPage()));

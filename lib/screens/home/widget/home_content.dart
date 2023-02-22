@@ -112,7 +112,7 @@ class HomeContent extends StatelessWidget {
                   onTap: () async {
                     await Navigator.of(context).push(
                         MaterialPageRoute(builder: (_) => const SignInPage()));
-                    BlocProvider.of<HomeBloc>(context).add(ReloadImageEvent());
+                    bloc.add(ReloadImageEvent());
                   },
                 );
               },

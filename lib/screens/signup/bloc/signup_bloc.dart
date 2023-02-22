@@ -34,7 +34,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         emit(LoadingState());
         await AuthService.signUp(emailController.text,
             passwordController.text, userNameController.text);
-        emit(NextHomePageState());
+        emit(NextLoginPageState());
       } catch (e) {
         emit(ErrorState(message: e.toString()));
       }
