@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/service/auth_service.dart';
 import '../../../core/service/validation_service.dart';
 
 part 'signin_event.dart';
@@ -29,8 +30,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     if (checkValidatorsOfTextField()) {
       try {
         emit(LoadingState());
-        // await AuthService.signIp(emailController.text,
-        //     passwordController.text);
+        await AuthService.signIn(emailController.text,
+            passwordController.text);
         emit(NextHomePageState());
       } catch (e) {
         emit(ErrorState(message: e.toString()));
