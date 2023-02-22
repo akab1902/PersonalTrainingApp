@@ -6,7 +6,13 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(),
+      body: _buildBody(context)
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return Text(
+      'Home page',
     );
   }
 }
