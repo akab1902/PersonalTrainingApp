@@ -167,8 +167,8 @@ class SignUpContent extends StatelessWidget {
 
   Widget _createHaveAnAccount(BuildContext context) {
     final bloc = BlocProvider.of<SignupBloc>(context);
-    return RichText(
-        text: TextSpan(
+    return Text.rich(
+        TextSpan(
           text: "Already have an account?",
           style: const TextStyle(
               color: ColorConstants.textBlack,

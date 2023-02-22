@@ -5,4 +5,6 @@ class PathConstants {
   static const String cameraIcon = 'assets/icons/camera_icon.svg';
   static const String statsIcon = 'assets/icons/sport_icon.svg';
 
+  // placeholders
+  static const String profilePlaceholder = 'assets/placeholders/profile_placeholder.png';
 }

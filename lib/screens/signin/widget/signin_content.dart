@@ -134,8 +134,8 @@ class SignInContent extends StatelessWidget {
 
   Widget _createDontHaveAnAccount(BuildContext context) {
     final bloc = BlocProvider.of<SignInBloc>(context);
-    return RichText(
-        text: TextSpan(
+    return Text.rich(
+        TextSpan(
             text: "Don't have an account?",
             style: const TextStyle(
                 color: ColorConstants.textBlack,
