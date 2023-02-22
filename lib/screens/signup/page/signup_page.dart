@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personal_training_app/screens/home/page/home.dart';
-import 'package:personal_training_app/screens/login/page/login_page.dart';
 
+import '../../signin/page/signin_page.dart';
 import '../bloc/signup_bloc.dart';
 import '../widget/signup_content.dart';
 
@@ -25,8 +25,8 @@ class SignupPage extends StatelessWidget {
           if (state is NextHomePageState) {
             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const HomePage()));
           }
-          if (state is LoginTappedEvent) {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const LoginPage()));
+          if (state is NextLoginPageState) {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const SignInPage()));
           } else if (state is ErrorState) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.message)),

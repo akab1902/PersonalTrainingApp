@@ -67,7 +67,7 @@ class AuthService {
 //       return 'User not found';
 //     case 'wrong-password':
 //       return 'Password is incorrect';
-//     case 'requires-recent-login':
+//     case 'requires-recent-signin':
 //       return 'Log in again before retrying this request';
 //     default:
 //       return e.message ?? 'Error';

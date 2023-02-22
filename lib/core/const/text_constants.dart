@@ -1,8 +1,4 @@
 class TextConstants {
-  // Login page
-  static const String login = 'Login';
-
-  // Sign Up
   static const String signUp = "Sign Up";
   static const String signIn = "Sign In";
   static const String signOut = "Sign Out";

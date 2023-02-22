@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personal_training_app/core/const/color_constants.dart';
@@ -62,7 +63,11 @@ class SignUpContent extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          _createSignUpButton(context)
+          _createSignUpButton(context),
+          const SizedBox(
+            height: 20,
+          ),
+          _createHaveAnAccount(context)
         ],
       ),
     ));
@@ -157,6 +162,31 @@ class SignUpContent extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  Widget _createHaveAnAccount(BuildContext context) {
+    final bloc = BlocProvider.of<SignupBloc>(context);
+    return RichText(
+        text: TextSpan(
+          text: "Already have an account?",
+          style: const TextStyle(
+              color: ColorConstants.texBlack,
+              fontSize: 18),
+          children: [
+            TextSpan(
+              text: " ${TextConstants.signIn}",
+              style: const TextStyle(
+                  color: ColorConstants.secondaryColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold
+              ),
+              recognizer: TapGestureRecognizer()..onTap = (){
+                bloc.add(LoginTappedEvent());
+              }
+            )
+          ]
+        )
     );
   }
 }
