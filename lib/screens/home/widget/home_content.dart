@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:personal_training_app/data/program_model.dart';
 import 'package:personal_training_app/screens/home/bloc/home_bloc.dart';
 import 'package:personal_training_app/screens/home/widget/program_item.dart';
+import 'package:personal_training_app/screens/profile/page/profile_page.dart';
 import 'package:personal_training_app/screens/signin/page/signin_page.dart';
 
 import '../../../core/ common_widgets/loading_widget.dart';
@@ -52,7 +54,7 @@ class HomeContent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 50),
+            const SizedBox(height: 30),
             _createProfileHeader(context),
             const SizedBox(height: 40),
             _createCalendar(context),
@@ -114,8 +116,7 @@ class HomeContent extends StatelessWidget {
                           ),
                         ),
                   onTap: () async {
-                    await Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const SignInPage()));
+                    bloc.add(OnProfileTappedEvent());
                     bloc.add(ReloadImageEvent());
                   },
                 );
@@ -174,7 +175,7 @@ class HomeContent extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       buildWhen: (_, currState) => currState is ReloadSuggestedProgramsState,
       builder: (context, state) {
-        final suggestedPrograms = state is ReloadSuggestedProgramsState
+        final List<Program> suggestedPrograms = state is ReloadSuggestedProgramsState
             ? state.suggestedPrograms ?? []
             : [];
         return GridView.builder(
@@ -187,6 +188,7 @@ class HomeContent extends StatelessWidget {
             return ProgramItem(
                 program: suggestedPrograms[index],
                 onTap: () {
+                  bloc.add(OnProgramTappedEvent(programName: suggestedPrograms[index].name!));
                 });
           },
         );

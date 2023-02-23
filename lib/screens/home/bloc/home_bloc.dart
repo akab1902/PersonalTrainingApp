@@ -9,6 +9,7 @@ class HomeBloc extends Bloc<HomeEvent,HomeState>{
   HomeBloc() : super(HomeInitial()) {
     on<OnProfileTappedEvent>(_onProfileTapped);
     on<OnExerciseTappedEvent>(_onExerciseTapped);
+    on<OnProgramTappedEvent>(_onProgramTapped);
     on<HomeInitialEvent>(_onHomeInitialized);
     on<ReloadDisplayNameEvent>(_onReloadDisplayName);
     on<ReloadImageEvent>(_onReloadImage);
@@ -21,6 +22,10 @@ class HomeBloc extends Bloc<HomeEvent,HomeState>{
 
   void _onExerciseTapped(OnExerciseTappedEvent event, Emitter<HomeState> emit){
     emit(NextExercisePageState(exerciseId: event.exerciseId));
+  }
+
+  void _onProgramTapped(OnProgramTappedEvent event, Emitter<HomeState> emit){
+    emit(NextProgramPageState(programName: event.programName));
   }
 
   void _onHomeInitialized(HomeInitialEvent event, Emitter<HomeState> emit){

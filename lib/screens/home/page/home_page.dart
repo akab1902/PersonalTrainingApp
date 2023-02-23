@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personal_training_app/screens/home/bloc/home_bloc.dart';
+import 'package:personal_training_app/screens/program/page/program_page.dart';
 import 'package:personal_training_app/screens/signin/page/signin_page.dart';
 
+import '../../profile/page/profile_page.dart';
 import '../widget/home_content.dart';
 
 class HomePage extends StatelessWidget {
@@ -30,12 +32,14 @@ class HomePage extends StatelessWidget {
           }
           return const HomeContent();
         },
-        listenWhen: (_, currState) => currState is ErrorState || currState is NextExercisePageState || currState is NextProfilePageState,
+        listenWhen: (_, currState) => currState is ErrorState || currState is NextExercisePageState || currState is NextProgramPageState || currState is NextProfilePageState,
         listener: (context, state) {
           if(state is NextExercisePageState){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const SignInPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfilePage()));
+          } else if(state is NextProgramPageState){
+            Navigator.push(context, MaterialPageRoute(builder: (_) => ProgramPage(programName: state.programName)));
           } else if(state is NextProfilePageState){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const SignInPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfilePage()));
           } else if (state is ErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),

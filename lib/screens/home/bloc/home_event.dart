@@ -11,6 +11,12 @@ class OnExerciseTappedEvent extends HomeEvent {
   OnExerciseTappedEvent({required this.exerciseId});
 }
 
+class OnProgramTappedEvent extends HomeEvent {
+  String programName;
+
+  OnProgramTappedEvent({required this.programName});
+}
+
 class HomeInitialEvent extends HomeEvent {}
 
 class ReloadDisplayNameEvent extends HomeEvent {}

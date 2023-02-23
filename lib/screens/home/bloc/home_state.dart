@@ -19,6 +19,12 @@ class NextExercisePageState extends HomeState {
   NextExercisePageState({required this.exerciseId});
 }
 
+class NextProgramPageState extends HomeState {
+  final String programName;
+
+  NextProgramPageState({required this.programName});
+}
+
 class NextProfilePageState extends HomeState {}
 
 class LoadingState extends HomeState {}

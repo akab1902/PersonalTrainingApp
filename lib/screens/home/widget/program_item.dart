@@ -5,7 +5,7 @@ import '../../../data/program_model.dart';
 
 class ProgramItem extends StatelessWidget {
   final Program program;
-  final Function onTap;
+  final Function() onTap;
 
   const ProgramItem({
     required this.onTap,
@@ -16,21 +16,19 @@ class ProgramItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap(),
+      onTap: () => onTap(),
       child: Container(
         decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 5,
-              offset: const Offset(0, 5),
-              color: Colors.black.withOpacity(0.1)
-            )
-          ],
+            boxShadow: [
+              BoxShadow(
+                  blurRadius: 5,
+                  offset: const Offset(0, 5),
+                  color: Colors.black.withOpacity(0.1))
+            ],
             borderRadius: BorderRadius.circular(10),
             image: DecorationImage(
                 image: NetworkImage(program.coverImgUrl ?? ''),
-                fit: BoxFit.cover)
-        ),
+                fit: BoxFit.cover)),
         child: Container(
           padding: const EdgeInsets.all(15.0),
           decoration: BoxDecoration(
@@ -64,7 +62,6 @@ class ProgramItem extends StatelessWidget {
                     color: ColorConstants.white,
                     fontSize: 14,
                     fontWeight: FontWeight.normal,
-
                   ),
                 )
               ],

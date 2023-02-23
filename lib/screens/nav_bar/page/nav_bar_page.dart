@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:personal_training_app/core/const/color_constants.dart';
 import 'package:personal_training_app/core/const/path_constants.dart';
+import 'package:personal_training_app/screens/camera/page/camera_page.dart';
 import 'package:personal_training_app/screens/home/page/home_page.dart';
+import 'package:personal_training_app/screens/stats/page/stats_page.dart';
 
 import '../bloc/nav_bar_bloc.dart';
 
@@ -75,7 +77,7 @@ class NavBarPage extends StatelessWidget {
   }
 
   Widget _createBody(BuildContext context, int index) {
-    final pages = [const HomePage(), const HomePage(), const HomePage()];
+    final pages = [const HomePage(), const CameraPage(), const StatsPage()];
     return pages[index];
   }
 }
