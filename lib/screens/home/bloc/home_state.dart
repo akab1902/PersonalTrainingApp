@@ -38,3 +38,11 @@ class ReloadDisplayNameState extends HomeState {
     required this.displayName,
   });
 }
+
+class ReloadSuggestedProgramsState extends HomeState {
+  final List<Program>? suggestedPrograms;
+
+  ReloadSuggestedProgramsState({
+    required this.suggestedPrograms,
+  });
+}

@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-
-import '../../../core/service/auth_service.dart';
+import '../../../data/program_model.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -13,6 +12,7 @@ class HomeBloc extends Bloc<HomeEvent,HomeState>{
     on<HomeInitialEvent>(_onHomeInitialized);
     on<ReloadDisplayNameEvent>(_onReloadDisplayName);
     on<ReloadImageEvent>(_onReloadImage);
+    on<ReloadSuggestedProgramsEvent>(_onReloadSuggested);
   }
 
   void _onProfileTapped(OnProfileTappedEvent event, Emitter<HomeState> emit){
@@ -30,6 +30,17 @@ class HomeBloc extends Bloc<HomeEvent,HomeState>{
   void _onReloadDisplayName(ReloadDisplayNameEvent event, Emitter<HomeState> emit){
     //get name from db
     emit(ReloadDisplayNameState(displayName: 'User01'));
+  }
+
+  void _onReloadSuggested(ReloadSuggestedProgramsEvent event, Emitter<HomeState> emit){
+    //get suggested from db
+    emit(ReloadSuggestedProgramsState(suggestedPrograms: [
+      Program(id: '1', name: 'Legs', durationInDays: 20, coverImgUrl: 'https://mensfitness.co.uk/wp-content/uploads/sites/2/2020/05/Side-to-side-lunge.jpg?w=900'),
+      Program(id: '1', name: 'Full body', durationInDays: 1, coverImgUrl: 'https://assets.gqindia.com/photos/5cee7eb00379a73d25177759/4:3/w_1440,h_1080,c_limit/Pushup.jpg'),
+      Program(id: '1', name: 'Full body', durationInDays: 1, coverImgUrl: 'https://assets.gqindia.com/photos/5cee7eb00379a73d25177759/4:3/w_1440,h_1080,c_limit/Pushup.jpg'),
+      Program(id: '1', name: 'Full body', durationInDays: 1, coverImgUrl: 'https://assets.gqindia.com/photos/5cee7eb00379a73d25177759/4:3/w_1440,h_1080,c_limit/Pushup.jpg'),
+      Program(id: '1', name: 'Legs', durationInDays: 20, coverImgUrl: 'https://mensfitness.co.uk/wp-content/uploads/sites/2/2020/05/Side-to-side-lunge.jpg?w=900'),
+    ]));
   }
 
   void _onReloadImage(ReloadImageEvent event, Emitter<HomeState> emit) async {

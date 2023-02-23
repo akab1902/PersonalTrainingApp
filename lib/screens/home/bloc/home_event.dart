@@ -16,3 +16,5 @@ class HomeInitialEvent extends HomeEvent {}
 class ReloadDisplayNameEvent extends HomeEvent {}
 
 class ReloadImageEvent extends HomeEvent {}
+
+class ReloadSuggestedProgramsEvent extends HomeEvent {}

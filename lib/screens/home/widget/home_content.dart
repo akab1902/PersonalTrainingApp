@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personal_training_app/screens/home/bloc/home_bloc.dart';
+import 'package:personal_training_app/screens/home/widget/program_item.dart';
 import 'package:personal_training_app/screens/signin/page/signin_page.dart';
 
 import '../../../core/ common_widgets/loading_widget.dart';
 import '../../../core/const/color_constants.dart';
 import '../../../core/const/path_constants.dart';
+import '../../../core/service/logger.dart';
 
 class HomeContent extends StatelessWidget {
   const HomeContent({Key? key}) : super(key: key);
@@ -48,15 +50,17 @@ class HomeContent extends StatelessWidget {
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 50),
             _createProfileHeader(context),
-            const SizedBox(height: 20),
+            const SizedBox(height: 40),
             _createCalendar(context),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             _createTodaySession(context),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             _createSuggestedPrograms(context),
+            const SizedBox(height: 30),
           ],
         ),
       ),
@@ -121,15 +125,72 @@ class HomeContent extends StatelessWidget {
         ));
   }
 
+  Widget _createTitle(String text) {
+    return Text(
+      text,
+      style: const TextStyle(
+          fontWeight: FontWeight.normal,
+          fontSize: 24,
+          color: ColorConstants.textBlack),
+    );
+  }
+
   Widget _createCalendar(BuildContext context) {
-    return Container();
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      child: Text(
+        '1    2    3    4    5    6    8    9    10',
+        style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: 24,
+            color: ColorConstants.textBlack),
+      ),
+    );
   }
 
   Widget _createTodaySession(BuildContext context) {
-    return Container();
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Container(
+          child: _createTitle('Today\'s session'),
+        ));
   }
 
   Widget _createSuggestedPrograms(BuildContext context) {
-    return Container();
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _createTitle('Suggested Programs'),
+            const SizedBox(height: 20),
+            _createSuggestedProgramsList(context),
+          ],
+        ));
+  }
+
+  Widget _createSuggestedProgramsList(BuildContext context) {
+    final bloc = BlocProvider.of<HomeBloc>(context);
+    return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (_, currState) => currState is ReloadSuggestedProgramsState,
+      builder: (context, state) {
+        final suggestedPrograms = state is ReloadSuggestedProgramsState
+            ? state.suggestedPrograms ?? []
+            : [];
+        return GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: suggestedPrograms.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, crossAxisSpacing: 20, mainAxisSpacing: 20),
+          itemBuilder: (BuildContext context, int index) {
+            return ProgramItem(
+                program: suggestedPrograms[index],
+                onTap: () {
+                });
+          },
+        );
+      },
+    );
   }
 }
