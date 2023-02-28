@@ -16,7 +16,7 @@ class User {
   }
 
   Map<String, dynamic> toJson(){
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['username'] = username;
     data['photoUrl'] = photoUrl;
     data['email'] = email;

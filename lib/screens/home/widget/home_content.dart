@@ -3,13 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personal_training_app/data/program_model.dart';
 import 'package:personal_training_app/screens/home/bloc/home_bloc.dart';
 import 'package:personal_training_app/screens/home/widget/program_item.dart';
-import 'package:personal_training_app/screens/profile/page/profile_page.dart';
-import 'package:personal_training_app/screens/signin/page/signin_page.dart';
-
 import '../../../core/ common_widgets/loading_widget.dart';
 import '../../../core/const/color_constants.dart';
 import '../../../core/const/path_constants.dart';
-import '../../../core/service/logger.dart';
 
 class HomeContent extends StatelessWidget {
   const HomeContent({Key? key}) : super(key: key);
@@ -56,10 +52,10 @@ class HomeContent extends StatelessWidget {
           children: [
             const SizedBox(height: 30),
             _createProfileHeader(context),
-            const SizedBox(height: 40),
-            _createCalendar(context),
-            const SizedBox(height: 30),
-            _createTodaySession(context),
+            // const SizedBox(height: 40),
+            // _createCalendar(context),
+            // const SizedBox(height: 30),
+            // _createTodaySession(context),
             const SizedBox(height: 30),
             _createSuggestedPrograms(context),
             const SizedBox(height: 30),
@@ -83,7 +79,7 @@ class HomeContent extends StatelessWidget {
                     ? state.displayName
                     : '[name]';
                 return Text(
-                  'Hi, $displayName',
+                  'Hi, $displayName !',
                   style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -137,16 +133,7 @@ class HomeContent extends StatelessWidget {
   }
 
   Widget _createCalendar(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
-      child: Text(
-        '1    2    3    4    5    6    8    9    10',
-        style: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: 24,
-            color: ColorConstants.textBlack),
-      ),
-    );
+    return Container();
   }
 
   Widget _createTodaySession(BuildContext context) {

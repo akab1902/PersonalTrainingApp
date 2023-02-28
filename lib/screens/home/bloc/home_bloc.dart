@@ -42,9 +42,9 @@ class HomeBloc extends Bloc<HomeEvent,HomeState>{
     emit(ReloadSuggestedProgramsState(suggestedPrograms: [
       Program(id: '1', name: 'Legs', durationInDays: 20, coverImgUrl: 'https://mensfitness.co.uk/wp-content/uploads/sites/2/2020/05/Side-to-side-lunge.jpg?w=900'),
       Program(id: '1', name: 'Full body', durationInDays: 1, coverImgUrl: 'https://assets.gqindia.com/photos/5cee7eb00379a73d25177759/4:3/w_1440,h_1080,c_limit/Pushup.jpg'),
-      Program(id: '1', name: 'Full body', durationInDays: 1, coverImgUrl: 'https://assets.gqindia.com/photos/5cee7eb00379a73d25177759/4:3/w_1440,h_1080,c_limit/Pushup.jpg'),
-      Program(id: '1', name: 'Full body', durationInDays: 1, coverImgUrl: 'https://assets.gqindia.com/photos/5cee7eb00379a73d25177759/4:3/w_1440,h_1080,c_limit/Pushup.jpg'),
-      Program(id: '1', name: 'Legs', durationInDays: 20, coverImgUrl: 'https://mensfitness.co.uk/wp-content/uploads/sites/2/2020/05/Side-to-side-lunge.jpg?w=900'),
+      Program(id: '1', name: 'Arms', durationInDays: 1, coverImgUrl: 'https://assets.gqindia.com/photos/5cee7eb00379a73d25177759/4:3/w_1440,h_1080,c_limit/Pushup.jpg'),
+      Program(id: '1', name: 'Back', durationInDays: 1, coverImgUrl: 'https://assets.gqindia.com/photos/5cee7eb00379a73d25177759/4:3/w_1440,h_1080,c_limit/Pushup.jpg'),
+      Program(id: '1', name: 'Shoulders', durationInDays: 20, coverImgUrl: 'https://mensfitness.co.uk/wp-content/uploads/sites/2/2020/05/Side-to-side-lunge.jpg?w=900'),
     ]));
   }
 

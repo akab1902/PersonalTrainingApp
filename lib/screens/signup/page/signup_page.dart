@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:personal_training_app/screens/home/page/home_page.dart';
 
 import '../../signin/page/signin_page.dart';
 import '../bloc/signup_bloc.dart';

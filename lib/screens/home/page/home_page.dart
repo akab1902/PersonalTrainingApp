@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personal_training_app/screens/home/bloc/home_bloc.dart';
 import 'package:personal_training_app/screens/program/page/program_page.dart';
-import 'package:personal_training_app/screens/signin/page/signin_page.dart';
 
 import '../../profile/page/profile_page.dart';
 import '../widget/home_content.dart';

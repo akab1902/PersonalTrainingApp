@@ -48,12 +48,16 @@ class ProgramItem extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  program.name ?? '',
-                  style: const TextStyle(
-                    color: ColorConstants.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                Flexible(
+                  child: Text(
+                    program.name ?? '',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: const TextStyle(
+                      color: ColorConstants.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 Text(
