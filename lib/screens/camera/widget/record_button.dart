@@ -26,8 +26,8 @@ class _RecordButtonState extends State<RecordButton> {
         });
         },
       child: Container(
-        width: 50,
-        height: 50,
+        width: 70,
+        height: 70,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
           color: ColorConstants.white

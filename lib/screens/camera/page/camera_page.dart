@@ -56,21 +56,69 @@ class _CameraPageState extends State<CameraPage> {
             buildWhen: (_, currState) => currState is CameraReadyState,
             builder: (context, state) {
                return state is CameraReadyState && BlocProvider.of<CameraBloc>(context).getController() != null
-                  ? CameraPreview(BlocProvider.of<CameraBloc>(context).getController()!)
+                  ? SizedBox(
+                    height: double.infinity,
+                   child: CameraPreview(BlocProvider.of<CameraBloc>(context).getController()!))
                   : Container();
             },
+          ),
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.transparent,
+                  Colors.transparent,
+                  Colors.black.withOpacity(0.7),
+                ],
+              ),
+            ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.all(20.0),
-              child: BlocBuilder<CameraBloc, CameraState>(
-                buildWhen: (_, currState) => currState is CameraReadyState || currState is CameraRecordingInProgressState || currState is CameraRecordingSuccessState || currState is CameraRecordingErrorState,
-                builder: (context, state) {
-                  return state is CameraReadyState && BlocProvider.of<CameraBloc>(context).getController() != null
-                      ? RecordButton(onTap: (){})
-                      : Container();
-                },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  BlocBuilder<CameraBloc, CameraState>(
+                    buildWhen: (_, currState) => currState is CameraReadyState || currState is CameraRecordingInProgressState || currState is CameraRecordingSuccessState || currState is CameraRecordingErrorState,
+                    builder: (context, state) {
+                      return state is CameraReadyState && BlocProvider.of<CameraBloc>(context).getController() != null
+                          ? const Text(
+                        "Squats",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                            color: ColorConstants.textWhite),
+                      )
+                          : Container();
+                    },
+                  ),
+                  BlocBuilder<CameraBloc, CameraState>(
+                    buildWhen: (_, currState) => currState is CameraReadyState || currState is CameraRecordingInProgressState || currState is CameraRecordingSuccessState || currState is CameraRecordingErrorState,
+                    builder: (context, state) {
+                      return state is CameraReadyState && BlocProvider.of<CameraBloc>(context).getController() != null
+                          ? RecordButton(onTap: (){})
+                          : Container();
+                    },
+                  ),
+                  BlocBuilder<CameraBloc, CameraState>(
+                    buildWhen: (_, currState) => currState is CameraReadyState || currState is CameraRecordingInProgressState || currState is CameraRecordingSuccessState || currState is CameraRecordingErrorState,
+                    builder: (context, state) {
+                      return state is CameraReadyState && BlocProvider.of<CameraBloc>(context).getController() != null
+                          ? const Text(
+                          "00:00",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                            color: ColorConstants.textWhite),
+                      )
+                          : Container();
+                    },
+                  ),
+                ],
               ),
             ),
           ),
