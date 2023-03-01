@@ -35,9 +35,11 @@ class _RecordButtonState extends State<RecordButton> {
         child: widget.isRecording
             ? const Icon(
           Icons.stop,
+          size: 40,
           color: ColorConstants.primaryColor,
         ) : const Icon(
           Icons.play_arrow,
+          size: 40,
           color: ColorConstants.primaryColor,
         ),
       ),

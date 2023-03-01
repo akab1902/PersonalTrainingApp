@@ -23,4 +23,6 @@ class ColorConstants {
 
   static const homeBackgroundColor = Color.fromRGBO(252, 252, 252, 1);
   static const textGrey = Color(0xFF8F98A3);
+
+  static const transparent = Colors.transparent;
 }
