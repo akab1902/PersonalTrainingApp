@@ -1,12 +1,10 @@
-import 'dart:async';
-
 import 'package:camera/camera.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personal_training_app/screens/camera/bloc/camera_bloc.dart';
 import 'package:personal_training_app/screens/camera/bloc/camera_utils.dart';
-import 'package:personal_training_app/screens/camera/widget/record_button.dart';
+import 'package:personal_training_app/screens/camera/widget/record_button_widget.dart';
 
 import '../../../core/const/color_constants.dart';
 
@@ -18,8 +16,6 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
-  Duration duration = const Duration();
-  Timer? timer;
   
   @override
   Widget build(BuildContext context) {
@@ -159,7 +155,6 @@ class _CameraPageState extends State<CameraPage> {
             ? RecordButton(
             onStart: () {
               bloc.add(CameraStartRecording());
-              startTimer();
         }, onStop: (){
           bloc.add(CameraStopRecording());
         })
@@ -176,31 +171,14 @@ class _CameraPageState extends State<CameraPage> {
           currState is CameraRecordingSuccessState ||
           currState is CameraRecordingErrorState,
       builder: (context, state) {
-        return Text(
-          "00:${duration.inSeconds}",
-          style: const TextStyle(
+        return const Text(
+          "00:00",
+          style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 24,
               color: ColorConstants.textWhite),
         );
       },
     );
-  }
-
-  startTimer(){
-    // timer = Timer.periodic(const Duration(seconds: 1), (_) => addTime());
-  }
-
-  void addTime(){
-    const addSeconds = 1;
-
-    setState(() {
-      final seconds = duration.inSeconds+addSeconds;
-      duration = Duration(seconds: seconds);
-    });
-  }
-
-  stopTimer(){
-    
   }
 }

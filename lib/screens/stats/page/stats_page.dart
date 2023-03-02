@@ -9,7 +9,7 @@ class StatsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-          margin: const EdgeInsets.only(top: 50),
+          margin: const EdgeInsets.only(top: 50, left: 20),
           child: const Text(
             'Stats Page',
             style: TextStyle(

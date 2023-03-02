@@ -39,14 +39,14 @@ class CameraBloc extends Bloc<CameraEvent, CameraState>{
 
   Future<void> _onCameraStartRecording(CameraStartRecording event, Emitter<CameraState> emit) async {
     if(state is CameraReadyState){
-      startVideoRecording();
+      // startVideoRecording();
       startTimer();
     }
   }
 
   Future<void> _onCameraStopRecording(CameraStopRecording event, Emitter<CameraState> emit) async {
     if(state is CameraRecordingInProgressState){
-      stopVideoRecording();
+      // stopVideoRecording();
       stopTimer();
       //save video and exercise data
     }
