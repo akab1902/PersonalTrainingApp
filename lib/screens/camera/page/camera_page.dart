@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:camera/camera.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,9 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
+  Duration duration = const Duration();
+  Timer? timer;
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: _buildBody(context));
@@ -26,7 +31,7 @@ class _CameraPageState extends State<CameraPage> {
       create: (context) => CameraBloc(cameraUtils: CameraUtils()),
       child: BlocConsumer<CameraBloc, CameraState>(
         buildWhen: (_, currState) =>
-            currState is CameraInitial || currState is CameraInitial,
+            currState is CameraInitial,
         builder: (context, state) {
           final bloc = BlocProvider.of<CameraBloc>(context);
           if (state is CameraInitial) {
@@ -133,9 +138,7 @@ class _CameraPageState extends State<CameraPage> {
               icon: Icon(Icons.keyboard_arrow_up, color: ColorConstants.white),
             ),
             onChanged: (value) {
-              setState(() {
-                val = value as String;
-              });
+
             },
           ),
         );
@@ -151,9 +154,15 @@ class _CameraPageState extends State<CameraPage> {
           currState is CameraRecordingSuccessState ||
           currState is CameraRecordingErrorState,
       builder: (context, state) {
-        return state is CameraReadyState &&
-                BlocProvider.of<CameraBloc>(context).getController() != null
-            ? RecordButton(onTap: () {})
+        final bloc = BlocProvider.of<CameraBloc>(context);
+        return BlocProvider.of<CameraBloc>(context).getController() != null
+            ? RecordButton(
+            onStart: () {
+              bloc.add(CameraStartRecording());
+              startTimer();
+        }, onStop: (){
+          bloc.add(CameraStopRecording());
+        })
             : Container();
       },
     );
@@ -167,14 +176,31 @@ class _CameraPageState extends State<CameraPage> {
           currState is CameraRecordingSuccessState ||
           currState is CameraRecordingErrorState,
       builder: (context, state) {
-        return const Text(
-          "00:00",
-          style: TextStyle(
+        return Text(
+          "00:${duration.inSeconds}",
+          style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 24,
               color: ColorConstants.textWhite),
         );
       },
     );
+  }
+
+  startTimer(){
+    // timer = Timer.periodic(const Duration(seconds: 1), (_) => addTime());
+  }
+
+  void addTime(){
+    const addSeconds = 1;
+
+    setState(() {
+      final seconds = duration.inSeconds+addSeconds;
+      duration = Duration(seconds: seconds);
+    });
+  }
+
+  stopTimer(){
+    
   }
 }

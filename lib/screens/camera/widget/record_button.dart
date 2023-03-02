@@ -3,10 +3,12 @@ import 'package:personal_training_app/core/const/color_constants.dart';
 
 class RecordButton extends StatefulWidget {
   bool isRecording = false;
-  final Function() onTap;
+  final Function() onStart;
+  final Function() onStop;
 
   RecordButton({
-    required this.onTap,
+    required this.onStart,
+    required this.onStop,
     Key? key
   }) : super(key: key);
 
@@ -20,7 +22,11 @@ class _RecordButtonState extends State<RecordButton> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.onTap;
+        if(widget.isRecording){
+          widget.onStop();
+        } else {
+          widget.onStart();
+        }
         setState(() {
           widget.isRecording = !widget.isRecording;
         });

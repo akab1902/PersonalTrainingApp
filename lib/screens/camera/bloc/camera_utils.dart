@@ -8,6 +8,6 @@ class CameraUtils {
     final camera = cameras
         .firstWhere((camera) => camera.lensDirection == cameraLensDirection);
 
-    return CameraController(camera, resolutionPreset, enableAudio: false);
+    return CameraController(camera, resolutionPreset, enableAudio: false, imageFormatGroup: ImageFormatGroup.yuv420);
   }
 }
