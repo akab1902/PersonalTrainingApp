@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:personal_training_app/core/const/color_constants.dart';
 
-import '../../../data/program_model.dart';
+import '../../../data/models/program_model.dart';
 
 class ProgramItem extends StatelessWidget {
   final Program program;

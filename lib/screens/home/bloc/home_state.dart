@@ -52,3 +52,11 @@ class ReloadSuggestedProgramsState extends HomeState {
     required this.suggestedPrograms,
   });
 }
+
+class ReloadTodaySessionState extends HomeState {
+  final List<Exercise>? todaySessions;
+
+  ReloadTodaySessionState({
+    required this.todaySessions,
+  });
+}

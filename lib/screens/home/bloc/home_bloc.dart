@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import '../../../data/program_model.dart';
+import '../../../data/models/exercise_model.dart';
+import '../../../data/models/program_model.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -14,6 +15,7 @@ class HomeBloc extends Bloc<HomeEvent,HomeState>{
     on<ReloadDisplayNameEvent>(_onReloadDisplayName);
     on<ReloadImageEvent>(_onReloadImage);
     on<ReloadSuggestedProgramsEvent>(_onReloadSuggested);
+    on<ReloadTodaySessionEvent>(_onReloadTodaySession);
   }
 
   void _onProfileTapped(OnProfileTappedEvent event, Emitter<HomeState> emit){
@@ -46,6 +48,14 @@ class HomeBloc extends Bloc<HomeEvent,HomeState>{
       Program(id: '1', name: 'Back', durationInDays: 1, coverImgUrl: 'https://assets.gqindia.com/photos/5cee7eb00379a73d25177759/4:3/w_1440,h_1080,c_limit/Pushup.jpg'),
       Program(id: '1', name: 'Shoulders', durationInDays: 20, coverImgUrl: 'https://mensfitness.co.uk/wp-content/uploads/sites/2/2020/05/Side-to-side-lunge.jpg?w=900'),
     ]));
+  }
+
+  void _onReloadTodaySession(ReloadTodaySessionEvent event, Emitter<HomeState> emit){
+    //get suggested from db
+    emit(ReloadTodaySessionState(todaySessions: [
+      Exercise(id: '1', name: 'Legs', durationInMins: 20, coverImgUrl: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/young-bodybuilder-doing-pushups-at-the-outdoor-gym-royalty-free-image-1661874908.jpg?crop=1.00xw:1.00xh;0,0&resize=640:*'),
+      Exercise(id: '2', name: 'Full body', durationInMins: 10, coverImgUrl: 'https://assets.gqindia.com/photos/5cee7eb00379a73d25177759/4:3/w_1440,h_1080,c_limit/Pushup.jpg'),
+      ]));
   }
 
   void _onReloadImage(ReloadImageEvent event, Emitter<HomeState> emit) async {

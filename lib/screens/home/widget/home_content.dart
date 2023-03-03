@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:personal_training_app/data/program_model.dart';
+import 'package:personal_training_app/data/models/program_model.dart';
 import 'package:personal_training_app/screens/home/bloc/home_bloc.dart';
 import 'package:personal_training_app/screens/home/widget/program_item.dart';
+import 'package:personal_training_app/screens/home/widget/today_session_item.dart';
 import '../../../core/ common_widgets/loading_widget.dart';
 import '../../../core/const/color_constants.dart';
 import '../../../core/const/path_constants.dart';
+import '../../../data/models/exercise_model.dart';
 
 class HomeContent extends StatelessWidget {
   const HomeContent({Key? key}) : super(key: key);
@@ -54,8 +56,8 @@ class HomeContent extends StatelessWidget {
             _createProfileHeader(context),
             // const SizedBox(height: 40),
             // _createCalendar(context),
-            // const SizedBox(height: 30),
-            // _createTodaySession(context),
+            const SizedBox(height: 30),
+            _createTodaySession(context),
             const SizedBox(height: 30),
             _createSuggestedPrograms(context),
             const SizedBox(height: 30),
@@ -138,10 +140,18 @@ class HomeContent extends StatelessWidget {
 
   Widget _createTodaySession(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Container(
-          child: _createTitle('Today\'s session'),
-        ));
+      padding: const EdgeInsets.only(left: 20.0),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+          _createTitle('Today\'s session'),
+          const SizedBox(height: 20,),
+          SizedBox(
+              height: 150,
+              child: _createTodaySessionList(context))
+        ]
+      ),
+    );
   }
 
   Widget _createSuggestedPrograms(BuildContext context) {
@@ -155,6 +165,39 @@ class HomeContent extends StatelessWidget {
             _createSuggestedProgramsList(context),
           ],
         ));
+  }
+
+  Widget _createTodaySessionList(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    final bloc = BlocProvider.of<HomeBloc>(context);
+    return BlocBuilder<HomeBloc, HomeState>(
+        buildWhen: (_, currState) => currState is ReloadTodaySessionState,
+        builder: (context, state) {
+          final List<Exercise> todaySessions = state is ReloadTodaySessionState
+              ? state.todaySessions ?? []
+              : [];
+          return ListView.builder(
+            clipBehavior: Clip.none,
+              shrinkWrap: true,
+              itemCount: todaySessions.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  width: width*0.9,
+                  padding: const EdgeInsets.only(right: 10),
+                  child: ExerciseItem(
+                      onTap: (){
+                        bloc.add(OnExerciseTappedEvent(exerciseId: todaySessions[index].id!));
+                      },
+                      day: 2,
+                      exercise: todaySessions[index]
+                  ),
+                );
+              }
+          );
+        }
+    );
+
   }
 
   Widget _createSuggestedProgramsList(BuildContext context) {
