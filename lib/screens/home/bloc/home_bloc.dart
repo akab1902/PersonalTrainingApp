@@ -13,6 +13,7 @@ class HomeBloc extends Bloc<HomeEvent,HomeState>{
     on<OnProgramTappedEvent>(_onProgramTapped);
     on<HomeInitialEvent>(_onHomeInitialized);
     on<ReloadDisplayNameEvent>(_onReloadDisplayName);
+    on<ReloadCalendarEvent>(_onReloadCalendar);
     on<ReloadImageEvent>(_onReloadImage);
     on<ReloadSuggestedProgramsEvent>(_onReloadSuggested);
     on<ReloadTodaySessionEvent>(_onReloadTodaySession);
@@ -37,6 +38,19 @@ class HomeBloc extends Bloc<HomeEvent,HomeState>{
   void _onReloadDisplayName(ReloadDisplayNameEvent event, Emitter<HomeState> emit){
     //get name from db
     emit(ReloadDisplayNameState(displayName: 'User01'));
+  }
+
+  void _onReloadCalendar(ReloadCalendarEvent event, Emitter<HomeState> emit){
+    DateTime today = DateTime.now();
+    var days;
+    if(today.month == 2) {
+      days = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29];
+    } else if(today.month == 4 || today.month == 6 || today.month == 9 ||today.month == 11){
+      days = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
+    } else {
+      days = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
+    }
+    emit(ReloadCalendarState(today: today.day, days: days));
   }
 
   void _onReloadSuggested(ReloadSuggestedProgramsEvent event, Emitter<HomeState> emit){

@@ -29,13 +29,15 @@ class StatsPage extends StatelessWidget {
           }
           return Stack(
             children: [
-              Column(
-                children: [
-                  const SizedBox(height: 55),
-                  _createTitle(context),
-                  _createTimeGraph(),
-                  _createExerciseCounts()
-                ],
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 55),
+                    _createTitle(context),
+                    _createTimeGraph(),
+                    _createExerciseCounts()
+                  ],
+                ),
               ),
               if (state is LoadingState)
                 _createLoading()
@@ -114,6 +116,8 @@ class StatsPage extends StatelessWidget {
   }
 
   Widget _createTimeGraph(){
-    return Container();
+    return Container(
+      
+    );
   }
 }

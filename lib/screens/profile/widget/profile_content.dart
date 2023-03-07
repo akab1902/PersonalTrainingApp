@@ -15,55 +15,57 @@ class ProfileContent extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          BlocBuilder<ProfileBloc, ProfileState>(
-            buildWhen: (_, currState) => currState is ProfileInitial,
-            builder: (context, state) {
-              // final photoUrl =
-              // state is ProfileInitial ? state.photoURL : null;
-              return GestureDetector(
-                child: const CircleAvatar(
-                  backgroundImage:
-                  AssetImage(PathConstants.profilePlaceholder),
-                  radius: 50,
-                ),
-                //     : CircleAvatar(
-                //   radius: 30,
-                //   child: ClipOval(
-                //     child: FadeInImage.assetNetwork(
-                //       placeholder: PathConstants.profilePlaceholder,
-                //       image: photoUrl,
-                //       fit: BoxFit.cover,
-                //       width: 200,
-                //       height: 120,
-                //     ),
-                //   ),
-                // ),
-                onTap: () async {
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            BlocBuilder<ProfileBloc, ProfileState>(
+              buildWhen: (_, currState) => currState is ProfileInitial,
+              builder: (context, state) {
+                // final photoUrl =
+                // state is ProfileInitial ? state.photoURL : null;
+                return GestureDetector(
+                  child: const CircleAvatar(
+                    backgroundImage:
+                    AssetImage(PathConstants.profilePlaceholder),
+                    radius: 50,
+                  ),
+                  //     : CircleAvatar(
+                  //   radius: 30,
+                  //   child: ClipOval(
+                  //     child: FadeInImage.assetNetwork(
+                  //       placeholder: PathConstants.profilePlaceholder,
+                  //       image: photoUrl,
+                  //       fit: BoxFit.cover,
+                  //       width: 200,
+                  //       height: 120,
+                  //     ),
+                  //   ),
+                  // ),
+                  onTap: () async {
 
-                },
-              );
-            },
-          ),
-          const SizedBox(height: 30,),
-          const Text(
-            "UserName",
-            style: TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: 24,
-                color: ColorConstants.textBlack),
-          ),
-          const SizedBox(height: 30,),
-          CustomButton(
-              title: 'Sign Out',
-              onTap: () {
-                bloc.add(OnSignOutTapped());
-              }
-          )
-        ],
+                  },
+                );
+              },
+            ),
+            const SizedBox(height: 30,),
+            const Text(
+              "UserName",
+              style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 24,
+                  color: ColorConstants.textBlack),
+            ),
+            const SizedBox(height: 30,),
+            CustomButton(
+                title: 'Sign Out',
+                onTap: () {
+                  bloc.add(OnSignOutTapped());
+                }
+            )
+          ],
+        ),
       ),
     );
   }

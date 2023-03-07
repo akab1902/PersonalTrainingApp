@@ -26,7 +26,7 @@ class ExercisePage extends StatelessWidget {
                   color: ColorConstants.black,
                 ),
               ),
-              SizedBox(width: 20,),
+              const SizedBox(width: 20,),
               Text(
                 '$exerciseName Page',
                 style: const TextStyle(
