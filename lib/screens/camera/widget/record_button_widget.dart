@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:personal_training_app/core/const/color_constants.dart';
 
 class RecordButton extends StatefulWidget {
-  bool isRecording = false;
+  bool isRecording;
   final Function() onStart;
   final Function() onStop;
 
   RecordButton({
+    this.isRecording = false,
     required this.onStart,
     required this.onStop,
     Key? key

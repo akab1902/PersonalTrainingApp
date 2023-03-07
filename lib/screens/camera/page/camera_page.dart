@@ -20,6 +20,8 @@ class CameraPage extends StatefulWidget {
 class _CameraPageState extends State<CameraPage> {
   Duration duration = Duration();
   Timer? timer;
+  String val = 'Squats';
+  bool isRecording = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +32,7 @@ class _CameraPageState extends State<CameraPage> {
     return BlocProvider<CameraBloc>(
       create: (context) => CameraBloc(cameraUtils: CameraUtils()),
       child: BlocConsumer<CameraBloc, CameraState>(
-        buildWhen: (_, currState) =>
-            currState is CameraInitial,
+        buildWhen: (_, currState) => currState is CameraInitial,
         builder: (context, state) {
           final bloc = BlocProvider.of<CameraBloc>(context);
           if (state is CameraInitial) {
@@ -104,7 +105,6 @@ class _CameraPageState extends State<CameraPage> {
 
   Widget _createDropDownMenu() {
     final items = ['Squats', 'Push-ups', 'Pull-ups'];
-    String val = 'Squats';
     return BlocBuilder<CameraBloc, CameraState>(
       buildWhen: (_, currState) => currState is CameraReadyState,
       builder: (context, state) {
@@ -131,14 +131,14 @@ class _CameraPageState extends State<CameraPage> {
                 color: ColorConstants.primaryColor,
               ),
             ),
-            buttonStyleData: const ButtonStyleData(
-              width: 130
-            ),
+            buttonStyleData: const ButtonStyleData(width: 130),
             iconStyleData: const IconStyleData(
               icon: Icon(Icons.keyboard_arrow_up, color: ColorConstants.white),
             ),
             onChanged: (value) {
-
+              setState(() {
+                val = value!;
+              });
             },
           ),
         );
@@ -157,13 +157,16 @@ class _CameraPageState extends State<CameraPage> {
         final bloc = BlocProvider.of<CameraBloc>(context);
         return BlocProvider.of<CameraBloc>(context).getController() != null
             ? RecordButton(
+            isRecording: isRecording,
             onStart: () {
-              startTimer();
-              // bloc.add(CameraStartRecording());
-        }, onStop: (){
-              stopTimer();
-          // bloc.add(CameraStopRecording());
-        })
+              isRecording = true;
+                startTimer();
+                // bloc.add(CameraStartRecording());
+              }, onStop: () {
+          isRecording = false;
+          stopTimer();
+                // bloc.add(CameraStopRecording());
+              })
             : Container();
       },
     );
@@ -175,22 +178,22 @@ class _CameraPageState extends State<CameraPage> {
     final seconds = twoDigits(duration.inSeconds.remainder(60));
 
     return Text(
-          "$minutes:$seconds",
-          style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              color: ColorConstants.textWhite),
-        );
+      "$minutes:$seconds",
+      style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 24,
+          color: ColorConstants.textWhite),
+    );
   }
 
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (_) => addTime());
   }
 
-
   void stopTimer() {
     setState(() {
       duration = const Duration();
+      timer = null;
     });
   }
 
