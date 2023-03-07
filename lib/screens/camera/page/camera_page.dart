@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:camera/camera.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +18,9 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
-  
+  Duration duration = Duration();
+  Timer? timer;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: _buildBody(context));
@@ -154,9 +158,11 @@ class _CameraPageState extends State<CameraPage> {
         return BlocProvider.of<CameraBloc>(context).getController() != null
             ? RecordButton(
             onStart: () {
-              bloc.add(CameraStartRecording());
+              startTimer();
+              // bloc.add(CameraStartRecording());
         }, onStop: (){
-          bloc.add(CameraStopRecording());
+              stopTimer();
+          // bloc.add(CameraStopRecording());
         })
             : Container();
       },
@@ -164,21 +170,34 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   Widget _createTimer() {
-    return BlocBuilder<CameraBloc, CameraState>(
-      buildWhen: (_, currState) =>
-          currState is CameraReadyState ||
-          currState is CameraRecordingInProgressState ||
-          currState is CameraRecordingSuccessState ||
-          currState is CameraRecordingErrorState,
-      builder: (context, state) {
-        return const Text(
-          "00:00",
-          style: TextStyle(
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+
+    return Text(
+          "$minutes:$seconds",
+          style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 24,
               color: ColorConstants.textWhite),
         );
-      },
-    );
+  }
+
+  void startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (_) => addTime());
+  }
+
+
+  void stopTimer() {
+    setState(() {
+      duration = const Duration();
+    });
+  }
+
+  void addTime() {
+    setState(() {
+      final seconds = duration.inSeconds + 1;
+      duration = Duration(seconds: seconds);
+    });
   }
 }
