@@ -12,21 +12,40 @@ class ProgramPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: GestureDetector(
-          onTap: (){
-            Navigator.pop(context);
-          },
-          child: Container(
-            margin: const EdgeInsets.only(top: 50),
-            child: Text(
-              '$programName Program Page',
-              style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: ColorConstants.textBlack),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      Icons.arrow_back_ios,
+                      color: ColorConstants.black,
+                    ),
+                  ),
+                  SizedBox(width: 20,),
+                  Text(
+                    '$programName Page',
+                    style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: ColorConstants.textBlack),
+                  ),
+                ],
+              ),
             ),
-          ),
-        )
-    );
+            const SizedBox(height: 30),
+            _buildBody(context)
+          ],
+        ));
+  }
+
+  Widget _buildBody(BuildContext context){
+    return Container();
   }
 }

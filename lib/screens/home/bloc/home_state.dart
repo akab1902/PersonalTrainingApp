@@ -14,9 +14,9 @@ class ErrorState extends HomeState {
 }
 
 class NextExercisePageState extends HomeState {
-  final String exerciseId;
+  final String exerciseName;
 
-  NextExercisePageState({required this.exerciseId});
+  NextExercisePageState({required this.exerciseName});
 }
 
 class NextProgramPageState extends HomeState {

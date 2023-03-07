@@ -23,7 +23,7 @@ class HomeBloc extends Bloc<HomeEvent,HomeState>{
   }
 
   void _onExerciseTapped(OnExerciseTappedEvent event, Emitter<HomeState> emit){
-    emit(NextExercisePageState(exerciseId: event.exerciseId));
+    emit(NextExercisePageState(exerciseName: event.exerciseName));
   }
 
   void _onProgramTapped(OnProgramTappedEvent event, Emitter<HomeState> emit){
