@@ -193,7 +193,7 @@ class _CameraPageState extends State<CameraPage> {
   void stopTimer() {
     setState(() {
       duration = const Duration();
-      timer = null;
+      timer?.cancel();
     });
   }
 
