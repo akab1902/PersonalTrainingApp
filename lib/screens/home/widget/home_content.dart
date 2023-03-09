@@ -187,7 +187,7 @@ class HomeContent extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 10),
                   child: ExerciseItem(
                       onTap: (){
-                        bloc.add(OnExerciseTappedEvent(exerciseName: todaySessions[index].name!));
+                        bloc.add(OnExerciseTappedEvent(exercise: todaySessions[index]));
                       },
                       day: 2,
                       exercise: todaySessions[index]
