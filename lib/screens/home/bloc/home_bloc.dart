@@ -23,7 +23,7 @@ class HomeBloc extends Bloc<HomeEvent,HomeState>{
   }
 
   void _onExerciseTapped(OnExerciseTappedEvent event, Emitter<HomeState> emit){
-    emit(NextExercisePageState(exerciseName: event.exerciseName));
+    emit(NextExercisePageState(exercise: event.exercise));
   }
 
   void _onProgramTapped(OnProgramTappedEvent event, Emitter<HomeState> emit){
@@ -53,8 +53,8 @@ class HomeBloc extends Bloc<HomeEvent,HomeState>{
   void _onReloadTodaySession(ReloadTodaySessionEvent event, Emitter<HomeState> emit){
     //get suggested from db
     emit(ReloadTodaySessionState(todaySessions: [
-      Exercise(id: '1', name: 'Legs', durationInMins: 20, coverImgUrl: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/young-bodybuilder-doing-pushups-at-the-outdoor-gym-royalty-free-image-1661874908.jpg?crop=1.00xw:1.00xh;0,0&resize=640:*'),
-      Exercise(id: '2', name: 'Full body', durationInMins: 10, coverImgUrl: 'https://assets.gqindia.com/photos/5cee7eb00379a73d25177759/4:3/w_1440,h_1080,c_limit/Pushup.jpg'),
+      Exercise(id: '1', name: 'Legs', durationInMins: 20, coverImgUrl: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/young-bodybuilder-doing-pushups-at-the-outdoor-gym-royalty-free-image-1661874908.jpg?crop=1.00xw:1.00xh;0,0&resize=640:*', videoUrl: "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4", description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ', steps: ['Stand up', 'Sit down', 'Lay down']),
+      Exercise(id: '2', name: 'Full body', durationInMins: 10, coverImgUrl: 'https://assets.gqindia.com/photos/5cee7eb00379a73d25177759/4:3/w_1440,h_1080,c_limit/Pushup.jpg', videoUrl: "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4", description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ', steps: ['Stand up', 'Sit down', 'Lay down']),
       ]));
   }
 
