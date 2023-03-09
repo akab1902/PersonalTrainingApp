@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:personal_training_app/screens/camera/widget/record_button_widget.dart';
 
 import '../../../core/ common_widgets/loading_widget.dart';
 import '../../../core/const/color_constants.dart';
@@ -38,19 +37,13 @@ class _CameraPageState extends State<CameraPage> {
 
   @override
   Widget build(BuildContext context) {
-    return cameraContent();
-  }
-
-  Widget cameraContent() {
     return Container(
       width: double.infinity,
       color: ColorConstants.backgroundWhite,
       child: Stack(
         children: [
           !_isLoading
-              ? SizedBox(
-              height: double.infinity,
-              child: CameraPreview(_cameraController))
+              ? SizedBox(child: CameraPreview(_cameraController))
               : _createLoading(),
           Container(
             decoration: BoxDecoration(
@@ -123,21 +116,27 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   Widget _createButton() {
-    return RecordButton(
-                isRecording: _isRecording,
-                onStart: () {
-                  _recordVideo();
-                  startTimer();
-                  // bloc.add(CameraStartRecording());
-                },
-                onStop: () {
-                  _recordVideo();
-                  stopTimer();
-                  // bloc.add(CameraStopRecording());
-                });
+    return GestureDetector(
+      onTap: () async {
+        await _recordVideo();
+      },
+      child: Container(
+        width: 70,
+        height: 70,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            color: ColorConstants.white
+        ),
+        child: Icon(
+          _isRecording ? Icons.stop : Icons.play_arrow,
+          size: 40,
+          color: ColorConstants.primaryColor,
+        )
+      ),
+    );
   }
 
-  Widget _createLoading(){
+  Widget _createLoading() {
     return const LoadingWidget();
   }
 
@@ -184,10 +183,12 @@ class _CameraPageState extends State<CameraPage> {
 
   _recordVideo() async {
     if (_isRecording) {
+      stopTimer();
       final file = await _cameraController.stopVideoRecording();
       setState(() => _isRecording = false);
       logger.d(file.name);
     } else {
+      startTimer();
       await _cameraController.prepareForVideoRecording();
       await _cameraController.startVideoRecording();
       setState(() => _isRecording = true);
