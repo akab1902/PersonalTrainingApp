@@ -117,8 +117,8 @@ class _CameraPageState extends State<CameraPage> {
 
   Widget _createButton() {
     return GestureDetector(
-      onTap: () async {
-        await _recordVideo();
+      onTap: () {
+        _recordVideo();
       },
       child: Container(
         width: 70,
@@ -176,22 +176,74 @@ class _CameraPageState extends State<CameraPage> {
     final cameras = await availableCameras();
     final front = cameras.firstWhere(
         (camera) => camera.lensDirection == CameraLensDirection.front);
-    _cameraController = CameraController(front, ResolutionPreset.max);
+    _cameraController = CameraController(front, ResolutionPreset.high, imageFormatGroup: ImageFormatGroup.yuv420);
     await _cameraController.initialize();
     setState(() => _isLoading = false);
   }
 
   _recordVideo() async {
-    if (_isRecording) {
-      stopTimer();
-      final file = await _cameraController.stopVideoRecording();
-      setState(() => _isRecording = false);
-      logger.d(file.name);
-    } else {
-      startTimer();
-      await _cameraController.prepareForVideoRecording();
-      await _cameraController.startVideoRecording();
-      setState(() => _isRecording = true);
+    try {
+      if (_isRecording && _cameraController.value.isInitialized) {
+        stopTimer();
+        stopVideoRecording().then((XFile? file) {
+          if (mounted) {
+            setState(() {});
+          }
+          if (file != null) {
+            logger.i('Video recorded to ${file.path}');
+          }
+        });
+        logger.i("stop recording");
+        setState(() => _isRecording = false);
+      } else if(_cameraController.value.isInitialized){
+        startTimer();
+        startVideoRecording().then((_) {
+          if (mounted) {
+            setState(() {});
+          }
+        });
+        logger.i("start recording");
+        setState(() => _isRecording = true);
+      }
+    } on Exception catch (e) {
+      logger.e(e);
+      return null;
+    }
+  }
+
+  Future<XFile?> stopVideoRecording() async {
+    final CameraController? cameraController = _cameraController;
+
+    if (cameraController == null || !cameraController.value.isRecordingVideo) {
+      return null;
+    }
+
+    try {
+      return cameraController.stopVideoRecording();
+    } on CameraException catch (e) {
+      logger.e(e);
+      return null;
+    }
+  }
+
+  Future<void> startVideoRecording() async {
+    final CameraController? cameraController = _cameraController;
+
+    if (cameraController == null || !cameraController.value.isInitialized) {
+      logger.d('Error: select a camera first.');
+      return;
+    }
+
+    if (cameraController.value.isRecordingVideo) {
+      // A recording is already started, do nothing.
+      return;
+    }
+
+    try {
+      await cameraController.startVideoRecording();
+    } on CameraException catch (e) {
+      logger.e(e);
+      return;
     }
   }
 }
