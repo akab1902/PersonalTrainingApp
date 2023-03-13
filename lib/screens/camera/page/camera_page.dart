@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 
 import '../../../core/ common_widgets/loading_widget.dart';
 import '../../../core/const/color_constants.dart';
@@ -30,9 +32,9 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   @override
-  void dispose() {
-    _cameraController.dispose();
+  Future<void> dispose() async {
     super.dispose();
+    await _cameraController.dispose();
   }
 
   @override
@@ -43,7 +45,10 @@ class _CameraPageState extends State<CameraPage> {
       child: Stack(
         children: [
           !_isLoading
-              ? SizedBox(child: CameraPreview(_cameraController))
+              ? SizedBox(
+              height: double.infinity,
+              width: double.infinity,
+              child: CameraPreview(_cameraController))
               : _createLoading(),
           Container(
             decoration: BoxDecoration(
@@ -185,15 +190,16 @@ class _CameraPageState extends State<CameraPage> {
     try {
       if (_isRecording && _cameraController.value.isInitialized) {
         stopTimer();
-        stopVideoRecording().then((XFile? file) {
+        stopVideoRecording().then((XFile? file) async {
           if (mounted) {
             setState(() {});
           }
           if (file != null) {
-            logger.i('Video recorded to ${file.path}');
+            await GallerySaver.saveVideo(file.path);
+            File(file.path).deleteSync();
+            logger.i("stop recording ${file.path}");
           }
         });
-        logger.i("stop recording");
         setState(() => _isRecording = false);
       } else if(_cameraController.value.isInitialized){
         startTimer();
@@ -240,7 +246,7 @@ class _CameraPageState extends State<CameraPage> {
     }
 
     try {
-      await cameraController.startVideoRecording();
+      await _cameraController.startVideoRecording();
     } on CameraException catch (e) {
       logger.e(e);
       return;
