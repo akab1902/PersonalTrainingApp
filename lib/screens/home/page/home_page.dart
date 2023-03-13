@@ -28,6 +28,7 @@ class HomePage extends StatelessWidget {
             bloc.add(HomeInitialEvent());
             bloc.add(ReloadDisplayNameEvent());
             bloc.add(ReloadImageEvent());
+            bloc.add(ReloadCalendarEvent());
             bloc.add(ReloadTodaySessionEvent());
             bloc.add(ReloadSuggestedProgramsEvent());
           }

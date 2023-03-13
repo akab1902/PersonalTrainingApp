@@ -54,8 +54,8 @@ class HomeContent extends StatelessWidget {
           children: [
             const SizedBox(height: 30),
             _createProfileHeader(context),
-            // const SizedBox(height: 40),
-            // _createCalendar(context),
+            const SizedBox(height: 40),
+            _createCalendar(context),
             const SizedBox(height: 30),
             _createTodaySession(context),
             const SizedBox(height: 30),
@@ -135,22 +135,68 @@ class HomeContent extends StatelessWidget {
   }
 
   Widget _createCalendar(BuildContext context) {
-    return Container();
+    return Column(
+      children: [
+        SizedBox(
+          height: 50,
+          child: BlocBuilder<HomeBloc, HomeState>(
+              buildWhen: (_, currState) => currState is ReloadCalendarState,
+              builder: (context, state) {
+                final int today = state is ReloadCalendarState ? state.today ?? 1 : 1;
+                final List<int> days =
+                    state is ReloadCalendarState ? state.days ?? [] : [];
+                return ListView.builder(
+                    clipBehavior: Clip.none,
+                    shrinkWrap: true,
+                    itemCount: days.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context, int index) {
+                      return index == today - 1
+                          ? Container(
+                              decoration: BoxDecoration(
+                                color: ColorConstants.primaryColorLight,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: Center(
+                                child: Text(
+                                  days.elementAt(index).toString(),
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: ColorConstants.textBlack),
+                                ),
+                              ),
+                            )
+                          : Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                              child: Text(
+                                  days.elementAt(index).toString(),
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.normal,
+                                      color: ColorConstants.textBlack),
+                                ),
+                            ),
+                          );
+                    });
+              }),
+        ),
+      ],
+    );
   }
 
   Widget _createTodaySession(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 20.0),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-          _createTitle('Today\'s session'),
-          const SizedBox(height: 20,),
-          SizedBox(
-              height: 150,
-              child: _createTodaySessionList(context))
-        ]
-      ),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        _createTitle('Today\'s session'),
+        const SizedBox(
+          height: 20,
+        ),
+        SizedBox(height: 150, child: _createTodaySessionList(context))
+      ]),
     );
   }
 
@@ -173,31 +219,27 @@ class HomeContent extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
         buildWhen: (_, currState) => currState is ReloadTodaySessionState,
         builder: (context, state) {
-          final List<Exercise> todaySessions = state is ReloadTodaySessionState
-              ? state.todaySessions ?? []
-              : [];
+          final List<Exercise> todaySessions =
+              state is ReloadTodaySessionState ? state.todaySessions ?? [] : [];
           return ListView.builder(
-            clipBehavior: Clip.none,
+              clipBehavior: Clip.none,
               shrinkWrap: true,
               itemCount: todaySessions.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
-                  width: width*0.9,
-                  padding: const EdgeInsets.only(right: 10),
+                  width: width * 0.9,
+                  padding: const EdgeInsets.only(right: 20),
                   child: ExerciseItem(
-                      onTap: (){
-                        bloc.add(OnExerciseTappedEvent(exercise: todaySessions[index]));
+                      onTap: () {
+                        bloc.add(OnExerciseTappedEvent(
+                            exerciseName: todaySessions[index].name!));
                       },
                       day: 2,
-                      exercise: todaySessions[index]
-                  ),
+                      exercise: todaySessions[index]),
                 );
-              }
-          );
-        }
-    );
-
+              });
+        });
   }
 
   Widget _createSuggestedProgramsList(BuildContext context) {
@@ -205,9 +247,10 @@ class HomeContent extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       buildWhen: (_, currState) => currState is ReloadSuggestedProgramsState,
       builder: (context, state) {
-        final List<Program> suggestedPrograms = state is ReloadSuggestedProgramsState
-            ? state.suggestedPrograms ?? []
-            : [];
+        final List<Program> suggestedPrograms =
+            state is ReloadSuggestedProgramsState
+                ? state.suggestedPrograms ?? []
+                : [];
         return GridView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -218,7 +261,8 @@ class HomeContent extends StatelessWidget {
             return ProgramItem(
                 program: suggestedPrograms[index],
                 onTap: () {
-                  bloc.add(OnProgramTappedEvent(programName: suggestedPrograms[index].name!));
+                  bloc.add(OnProgramTappedEvent(
+                      programName: suggestedPrograms[index].name!));
                 });
           },
         );

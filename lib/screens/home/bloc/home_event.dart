@@ -23,6 +23,8 @@ class ReloadDisplayNameEvent extends HomeEvent {}
 
 class ReloadImageEvent extends HomeEvent {}
 
+class ReloadCalendarEvent extends HomeEvent {}
+
 class ReloadSuggestedProgramsEvent extends HomeEvent {}
 
 class ReloadTodaySessionEvent extends HomeEvent {}

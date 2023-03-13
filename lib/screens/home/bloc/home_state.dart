@@ -37,6 +37,15 @@ class ReloadImageState extends HomeState {
   });
 }
 
+class ReloadCalendarState extends HomeState {
+  final int? today;
+  final List<int>? days;
+  ReloadCalendarState({
+    required this.today,
+    required this.days,
+  });
+}
+
 class ReloadDisplayNameState extends HomeState {
   final String? displayName;
 

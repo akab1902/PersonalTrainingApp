@@ -1,12 +1,14 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:personal_training_app/screens/camera/bloc/camera_bloc.dart';
-import 'package:personal_training_app/screens/camera/bloc/camera_utils.dart';
-import 'package:personal_training_app/screens/camera/widget/record_button_widget.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 
+import '../../../core/ common_widgets/loading_widget.dart';
 import '../../../core/const/color_constants.dart';
+import '../../../core/service/logger.dart';
 
 class CameraPage extends StatefulWidget {
   const CameraPage({Key? key}) : super(key: key);
@@ -16,56 +18,38 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
-  
+  Duration _duration = Duration();
+  Timer? _timer;
+  String _val = 'Squats';
+  bool _isRecording = false;
+  bool _isLoading = true;
+  late CameraController _cameraController;
+
+  @override
+  void initState() {
+    super.initState();
+    _initCamera();
+  }
+
+  @override
+  Future<void> dispose() async {
+    super.dispose();
+    await _cameraController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _buildBody(context));
-  }
-
-  BlocProvider<CameraBloc> _buildBody(BuildContext context) {
-    return BlocProvider<CameraBloc>(
-      create: (context) => CameraBloc(cameraUtils: CameraUtils()),
-      child: BlocConsumer<CameraBloc, CameraState>(
-        buildWhen: (_, currState) =>
-            currState is CameraInitial,
-        builder: (context, state) {
-          final bloc = BlocProvider.of<CameraBloc>(context);
-          if (state is CameraInitial) {
-            bloc.add(CameraInitialized());
-          }
-          return cameraContent();
-        },
-        listenWhen: (_, currState) => currState is ErrorState,
-        listener: (context, state) {
-          if (state is ErrorState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
-          }
-        },
-      ),
-    );
-  }
-
-  Widget cameraContent() {
     return Container(
       width: double.infinity,
       color: ColorConstants.backgroundWhite,
       child: Stack(
         children: [
-          BlocBuilder<CameraBloc, CameraState>(
-            buildWhen: (_, currState) => currState is CameraReadyState,
-            builder: (context, state) {
-              return state is CameraReadyState &&
-                      BlocProvider.of<CameraBloc>(context).getController() !=
-                          null
-                  ? SizedBox(
-                      height: double.infinity,
-                      child: CameraPreview(BlocProvider.of<CameraBloc>(context)
-                          .getController()!))
-                  : Container();
-            },
-          ),
+          !_isLoading
+              ? SizedBox(
+              height: double.infinity,
+              width: double.infinity,
+              child: CameraPreview(_cameraController))
+              : _createLoading(),
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -100,85 +84,172 @@ class _CameraPageState extends State<CameraPage> {
 
   Widget _createDropDownMenu() {
     final items = ['Squats', 'Push-ups', 'Pull-ups'];
-    String val = 'Squats';
-    return BlocBuilder<CameraBloc, CameraState>(
-      buildWhen: (_, currState) => currState is CameraReadyState,
-      builder: (context, state) {
-        return DropdownButtonHideUnderline(
-          child: DropdownButton2(
-            items: items
-                .map((item) => DropdownMenuItem<String>(
-                      value: item,
-                      child: Text(
-                        item,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ))
-                .toList(),
-            value: val,
-            dropdownStyleData: DropdownStyleData(
-              width: 130,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
-                color: ColorConstants.primaryColor,
-              ),
-            ),
-            buttonStyleData: const ButtonStyleData(
-              width: 130
-            ),
-            iconStyleData: const IconStyleData(
-              icon: Icon(Icons.keyboard_arrow_up, color: ColorConstants.white),
-            ),
-            onChanged: (value) {
-
-            },
+    return DropdownButtonHideUnderline(
+      child: DropdownButton2(
+        items: items
+            .map((item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(
+                    item,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ))
+            .toList(),
+        value: _val,
+        dropdownStyleData: DropdownStyleData(
+          width: 130,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            color: ColorConstants.primaryColor,
           ),
-        );
-      },
+        ),
+        buttonStyleData: const ButtonStyleData(width: 130),
+        iconStyleData: const IconStyleData(
+          icon: Icon(Icons.keyboard_arrow_up, color: ColorConstants.white),
+        ),
+        onChanged: (value) {
+          setState(() {
+            _val = value!;
+          });
+        },
+      ),
     );
   }
 
   Widget _createButton() {
-    return BlocBuilder<CameraBloc, CameraState>(
-      buildWhen: (_, currState) =>
-          currState is CameraReadyState ||
-          currState is CameraRecordingInProgressState ||
-          currState is CameraRecordingSuccessState ||
-          currState is CameraRecordingErrorState,
-      builder: (context, state) {
-        final bloc = BlocProvider.of<CameraBloc>(context);
-        return BlocProvider.of<CameraBloc>(context).getController() != null
-            ? RecordButton(
-            onStart: () {
-              bloc.add(CameraStartRecording());
-        }, onStop: (){
-          bloc.add(CameraStopRecording());
-        })
-            : Container();
+    return GestureDetector(
+      onTap: () {
+        _recordVideo();
       },
+      child: Container(
+        width: 70,
+        height: 70,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            color: ColorConstants.white
+        ),
+        child: Icon(
+          _isRecording ? Icons.stop : Icons.play_arrow,
+          size: 40,
+          color: ColorConstants.primaryColor,
+        )
+      ),
     );
   }
 
+  Widget _createLoading() {
+    return const LoadingWidget();
+  }
+
   Widget _createTimer() {
-    return BlocBuilder<CameraBloc, CameraState>(
-      buildWhen: (_, currState) =>
-          currState is CameraReadyState ||
-          currState is CameraRecordingInProgressState ||
-          currState is CameraRecordingSuccessState ||
-          currState is CameraRecordingErrorState,
-      builder: (context, state) {
-        return const Text(
-          "00:00",
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              color: ColorConstants.textWhite),
-        );
-      },
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final minutes = twoDigits(_duration.inMinutes.remainder(60));
+    final seconds = twoDigits(_duration.inSeconds.remainder(60));
+
+    return Text(
+      "$minutes:$seconds",
+      style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 24,
+          color: ColorConstants.textWhite),
     );
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) => addTime());
+  }
+
+  void stopTimer() {
+    setState(() {
+      _duration = const Duration();
+      _timer?.cancel();
+    });
+  }
+
+  void addTime() {
+    setState(() {
+      final seconds = _duration.inSeconds + 1;
+      _duration = Duration(seconds: seconds);
+    });
+  }
+
+  _initCamera() async {
+    final cameras = await availableCameras();
+    final front = cameras.firstWhere(
+        (camera) => camera.lensDirection == CameraLensDirection.front);
+    _cameraController = CameraController(front, ResolutionPreset.high, imageFormatGroup: ImageFormatGroup.yuv420);
+    await _cameraController.initialize();
+    setState(() => _isLoading = false);
+  }
+
+  _recordVideo() async {
+    try {
+      if (_isRecording && _cameraController.value.isInitialized) {
+        stopTimer();
+        stopVideoRecording().then((XFile? file) async {
+          if (mounted) {
+            setState(() {});
+          }
+          if (file != null) {
+            await GallerySaver.saveVideo(file.path);
+            File(file.path).deleteSync();
+            logger.i("stop recording ${file.path}");
+          }
+        });
+        setState(() => _isRecording = false);
+      } else if(_cameraController.value.isInitialized){
+        startTimer();
+        startVideoRecording().then((_) {
+          if (mounted) {
+            setState(() {});
+          }
+        });
+        logger.i("start recording");
+        setState(() => _isRecording = true);
+      }
+    } on Exception catch (e) {
+      logger.e(e);
+      return null;
+    }
+  }
+
+  Future<XFile?> stopVideoRecording() async {
+    final CameraController? cameraController = _cameraController;
+
+    if (cameraController == null || !cameraController.value.isRecordingVideo) {
+      return null;
+    }
+
+    try {
+      return cameraController.stopVideoRecording();
+    } on CameraException catch (e) {
+      logger.e(e);
+      return null;
+    }
+  }
+
+  Future<void> startVideoRecording() async {
+    final CameraController? cameraController = _cameraController;
+
+    if (cameraController == null || !cameraController.value.isInitialized) {
+      logger.d('Error: select a camera first.');
+      return;
+    }
+
+    if (cameraController.value.isRecordingVideo) {
+      // A recording is already started, do nothing.
+      return;
+    }
+
+    try {
+      await _cameraController.startVideoRecording();
+    } on CameraException catch (e) {
+      logger.e(e);
+      return;
+    }
   }
 }

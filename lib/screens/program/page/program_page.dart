@@ -28,7 +28,7 @@ class ProgramPage extends StatelessWidget {
                       color: ColorConstants.black,
                     ),
                   ),
-                  SizedBox(width: 20,),
+                  const SizedBox(width: 20,),
                   Text(
                     '$programName Page',
                     style: const TextStyle(
