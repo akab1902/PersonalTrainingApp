@@ -6,9 +6,9 @@ abstract class HomeEvent {}
 class OnProfileTappedEvent extends HomeEvent {}
 
 class OnExerciseTappedEvent extends HomeEvent {
-  String exerciseName;
+  Exercise exercise;
 
-  OnExerciseTappedEvent({required this.exerciseName});
+  OnExerciseTappedEvent({required this.exercise});
 }
 
 class OnProgramTappedEvent extends HomeEvent {
